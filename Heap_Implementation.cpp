@@ -5,14 +5,6 @@ using namespace std;
 class Heap{
     vector<int> heap;
     int minHeap;
-public:
-
-    //Constructor
-    Heap(bool type=true)
-    {
-        heap.push_back(-1);
-        minHeap = type;
-    }
 
     bool compare (int a, int b)
     {
@@ -23,6 +15,41 @@ public:
         else
             return a>b;
     }
+
+    void heapify(int index)
+    {
+        int left = 2*index;
+        int right = 2*index + 1;
+
+        int dIndex = index; //deciding index
+
+        if(left < heap.size() && compare(heap[left],heap[dIndex]))
+        {
+            dIndex = left;
+        }
+
+        if(right < heap.size() && compare(heap[right],heap[dIndex]))
+        {
+            dIndex = right;
+        }
+
+        if (dIndex != index)
+        {
+            swap(heap[dIndex],heap[index]);
+            heapify(dIndex);
+        }
+
+    }
+
+public:
+
+    //Constructor
+    Heap(bool type=true)
+    {
+        heap.push_back(-1);
+        minHeap = type;
+    }
+
 
     void insert(int node)
     {
@@ -42,6 +69,13 @@ public:
         }
     }
 
+    void pop()
+    {
+        swap(heap[1], heap[heap.size()-1]);
+        heap.pop_back();
+        heapify(1);
+    }
+
     bool isEmpty()
     {
         return heap.size()==1;
@@ -56,7 +90,7 @@ public:
 
 int main()
 {
-    Heap heap;
+    Heap heap(false);
     heap.insert(23);
     heap.insert(18);
     heap.insert(14);
@@ -64,5 +98,11 @@ int main()
     heap.insert(10);
     heap.insert(56);
     heap.insert(5);
-    cout<<heap.top();
+    //cout<<heap.top();
+    while(!heap.isEmpty())
+    {
+        cout<<heap.top()<<" ";
+        heap.pop();
+        
+    }
 }
